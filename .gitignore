@@ -1,2 +1,5 @@
+#windows
 *.exe
 *.o
+#linux
+a.out
