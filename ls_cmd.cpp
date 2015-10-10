@@ -1,11 +1,11 @@
-#include<iostream>
-#include<stdlib.h>
-#include<unistd.h>
-#include<sys/types.h>
-#include<string.h>
-#include<sys/stat.h>
-#include<fcntl.h>
-#include<dirent.h>
+#include <iostream>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <dirent.h>
 
 #define INVALID_ARGS 3
 #define NO_ARGS 1
