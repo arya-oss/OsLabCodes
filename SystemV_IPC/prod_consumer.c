@@ -15,11 +15,11 @@ int semid, shmid;
 
 void sem_wait(int sem_num) {
 	struct sembuf s={sem_num, -1, 0};
-	semop(semid, &s, 0);
+	semop(semid, &s, 1);
 }
 void sem_post(int sem_num) {
 	struct sembuf s={sem_num, 1, 0};
-	semop(semid, &s, 0);
+	semop(semid, &s, 1);
 }
 void init() {
 	/** 
