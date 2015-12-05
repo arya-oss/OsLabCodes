@@ -2,8 +2,7 @@
 #include <cstdlib>
 #include <pthread.h>
 #include <semaphore.h>
-#include <stack>
-using namespace std;
+
 #define TNUMS 5
 
 struct rwlock_t {
@@ -37,47 +36,29 @@ struct rwlock_t {
 	}
 } rwl;
 
-struct Resource {
-	stack<int> * s;
-	void read(pthread_t id){
-		printf("Reader %d reads %d\n", id, s->top());
-	}
-	void write(pthread_t id){
-		printf("Writer %d removes top %d\n",id, s->top());
-		s->pop();
-	}
-};
-
 void * reader(void * args){
-	Resource * r = (Resource *) args;
 	rwl.reader_acquire();
 	pthread_t id=pthread_self();
-	r->read(id);
+	printf("Reader %d is reading\n",(int)id);
 	rwl.reader_release();
 }
 void * writer(void * args){
 	Resource * r = (Resource *) args;
 	rwl.writer_acquire();
 	pthread_t id=pthread_self();
-	r->write(id);
+	printf("Writer %d is writing\n",(int)id);
 	rwl.writer_release();
 }
 int main(int argc, char const *argv[])
 {	
-	stack<int> * s= new stack<int>();
-	for (int i = 0; i <= TNUMS; ++i)
-		s->push(i);
-	Resource * r = new Resource();
-	r->s = s;
 	pthread_t red_t[TNUMS], writ_t[TNUMS];
 	for (int i = 0; i < TNUMS; ++i){
-		pthread_create(&red_t[i],NULL, &reader, (void *)r);
-		pthread_create(&writ_t[i],NULL, &writer, (void *)r);
+		pthread_create(&red_t[i],NULL, &reader, NULL);
+		pthread_create(&writ_t[i],NULL, &writer, NULL);
 	}
 	for (int i = 0; i < TNUMS; ++i) {
 		pthread_join(red_t[i], NULL);
 		pthread_join(writ_t[i], NULL);
 	}
-	exit(EXIT_SUCCESS);
 	return 0;
 }

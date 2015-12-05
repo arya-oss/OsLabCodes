@@ -6,7 +6,6 @@ int N, TNUMS;
 int prime[100000], j = 0;
 
 pthread_mutex_t mutex;
-pthread_barrier_t barr;
 
 int isPrime(int num){
 	if (num==2 || num==3)
@@ -24,14 +23,15 @@ int isPrime(int num){
 }
 void * run (void * args) {
 	int tok = *(int * )args;
+    printf("thread %d started \n", tok);
 	int tmp_arr[10000];
 	int k=0,low = tok*(N/TNUMS),high = (tok+1)*(N/TNUMS);
-	pthread_barrier_wait(&barr);
 	for (int i = low+1; i <= high; ++i){
 		if(isPrime(i))
 			tmp_arr[k++] = i;
 		//printf("R\n");
 	}
+    
 	pthread_mutex_lock(&mutex);
 	for (int i = 0; i < k; ++i){
 		prime[j++] = tmp_arr[i];
@@ -47,7 +47,7 @@ int A[] = {	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
 int main(int argc, char const *argv[])
 {
 	pthread_mutex_init(&mutex, NULL);
-	pthread_barrier_init(&barr, NULL, TNUMS);
+	
 	if(argc < 3) {
 		printf("Usage : ./a.out <THREAD_COUNT 64> <RANGE THREAD_COUNT>\n");
 		exit(1);

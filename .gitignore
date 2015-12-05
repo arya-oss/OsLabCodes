@@ -3,3 +3,6 @@
 *.o
 #linux
 a.out
+#outputs
+prime.out
+*.out

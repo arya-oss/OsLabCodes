@@ -64,6 +64,3 @@ int main() {
 	cout << "\nAverage Turn Around Time : " << avg_tat/N;
 	return 0;
 }
-
-
-
